@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from django.shortcuts import render
 from django.utils import timezone
-from django.db.models import F
+from django.db.models import F, Q
 
 from .models import Medicine, Supplier, StockBatch, StockMovement
 
@@ -35,10 +35,20 @@ def dashboard(request):
     return render(request, 'inventory/dashboard.html', context)
 
 def medicine_list(request):
+    query = request.GET.get('q', '')
+
     medicines = Medicine.objects.select_related('supplier').order_by('name')
+
+    if query:
+        medicines = medicines.filter(
+            Q(name__icontains=query) |
+            Q(generic_name__icontains=query) |
+            Q(category__icontains=query)
+        )
 
     context = {
         'medicines': medicines,
+        'query': query,
     }
 
     return render(request, 'inventory/medicine_list.html', context)

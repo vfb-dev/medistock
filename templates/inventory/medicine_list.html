@@ -50,6 +50,26 @@
         <a href="/">Back to Dashboard</a>
     </div>
 
+    <form method="get" style="margin-bottom: 20px;">
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Search medicines..."
+            style="padding: 10px; width: 280px; border: 1px solid #d1d5db; border-radius: 6px;"
+        >
+        <button
+            type="submit"
+            style="padding: 10px 16px; background: #0f766e; color: white; border: none; border-radius: 6px; cursor: pointer;"
+        >
+            Search
+        </button>
+
+        {% if query %}
+            <a href="/medicines/" style="margin-left: 10px;">Clear</a>
+        {% endif %}
+    </form>
+
     <table>
         <thead>
             <tr>
