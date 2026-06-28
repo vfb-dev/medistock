@@ -201,3 +201,16 @@ def batch_update(request, pk):
     }
 
     return render(request, 'inventory/batch_form.html', context)
+
+def batch_delete(request, pk):
+    batch = get_object_or_404(StockBatch, pk=pk)
+
+    if request.method == 'POST':
+        batch.delete()
+        return redirect('batch_list')
+
+    context = {
+        'batch': batch,
+    }
+
+    return render(request, 'inventory/batch_confirm_delete.html', context)

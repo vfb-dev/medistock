@@ -75,6 +75,8 @@
                     <td>{{ batch.received_date }}</td>
                     <td>
                         <a href="/batches/{{ batch.id }}/edit/">Edit</a>
+                        |
+                        <a href="/batches/{{ batch.id }}/delete/">Delete</a>
                     </td>
                 </tr>
             {% empty %}

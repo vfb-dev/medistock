@@ -16,4 +16,5 @@ urlpatterns = [
     path('batches/', views.batch_list, name='batch_list'),
     path('batches/add/', views.batch_create, name='batch_create'),
     path('batches/<int:pk>/edit/', views.batch_update, name='batch_update'),
+    path('batches/<int:pk>/delete/', views.batch_delete, name='batch_delete'),
 ]
