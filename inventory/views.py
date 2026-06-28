@@ -100,3 +100,12 @@ def medicine_delete(request, pk):
     }
 
     return render(request, 'inventory/medicine_confirm_delete.html', context)
+
+def supplier_list(request):
+    suppliers = Supplier.objects.order_by('name')
+
+    context = {
+        'suppliers': suppliers,
+    }
+
+    return render(request, 'inventory/supplier_list.html', context)
