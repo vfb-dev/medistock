@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.db.models import F, Q
 
 from .models import Medicine, Supplier, StockBatch, StockMovement
-from .forms import MedicineForm, SupplierForm
+from .forms import MedicineForm, SupplierForm, StockBatchForm
 
 def dashboard(request):
     today = timezone.now().date()
@@ -166,3 +166,19 @@ def batch_list(request):
     }
 
     return render(request, 'inventory/batch_list.html', context)
+
+def batch_create(request):
+    if request.method == 'POST':
+        form = StockBatchForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('batch_list')
+    else:
+        form = StockBatchForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'inventory/batch_form.html', context)
