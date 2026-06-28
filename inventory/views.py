@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.db.models import F, Q
 
@@ -65,6 +65,25 @@ def medicine_create(request):
 
     context = {
         'form': form,
+    }
+
+    return render(request, 'inventory/medicine_form.html', context)
+
+def medicine_update(request, pk):
+    medicine = get_object_or_404(Medicine, pk=pk)
+
+    if request.method == 'POST':
+        form = MedicineForm(request.POST, instance=medicine)
+
+        if form.is_valid():
+            form.save()
+            return redirect('medicine_list')
+    else:
+        form = MedicineForm(instance=medicine)
+
+    context = {
+        'form': form,
+        'medicine': medicine,
     }
 
     return render(request, 'inventory/medicine_form.html', context)

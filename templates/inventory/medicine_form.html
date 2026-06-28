@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Medicine - MediStock</title>
+    <title>{% if medicine %}Edit{% else %}Add{% endif %} Medicine - MediStock</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-    <h1>Add Medicine</h1>
+    <h1>{% if medicine %}Edit Medicine{% else %}Add Medicine{% endif %}</h1>
 
     <div class="form-box">
         <form method="post">
@@ -65,7 +65,7 @@
 
             {{ form.as_p }}
 
-            <button type="submit">Save Medicine</button>
+            <button type="submit">{% if medicine %}Update Medicine{% else %}Save Medicine{% endif %}</button>
             <a href="/medicines/">Cancel</a>
         </form>
     </div>
