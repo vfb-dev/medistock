@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.db.models import F, Q
 
 from .models import Medicine, Supplier, StockBatch, StockMovement
-from .forms import MedicineForm
+from .forms import MedicineForm, SupplierForm
 
 def dashboard(request):
     today = timezone.now().date()
@@ -109,3 +109,19 @@ def supplier_list(request):
     }
 
     return render(request, 'inventory/supplier_list.html', context)
+
+def supplier_create(request):
+    if request.method == 'POST':
+        form = SupplierForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('supplier_list')
+    else:
+        form = SupplierForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'inventory/supplier_form.html', context)

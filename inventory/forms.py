@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Medicine
+from .models import Medicine, Supplier
 
 
 class MedicineForm(forms.ModelForm):
@@ -13,4 +13,14 @@ class MedicineForm(forms.ModelForm):
             'unit_price',
             'reorder_level',
             'supplier',
+        ]
+
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = [
+            'name',
+            'phone',
+            'email',
+            'address',
         ]
