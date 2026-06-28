@@ -73,6 +73,8 @@
                     <td>{{ supplier.address }}</td>
                     <td>
                         <a href="/suppliers/{{ supplier.id }}/edit/">Edit</a>
+                        |
+                        <a href="/suppliers/{{ supplier.id }}/delete/">Delete</a>
                     </td>
                 </tr>
             {% empty %}

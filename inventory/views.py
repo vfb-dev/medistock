@@ -144,3 +144,16 @@ def supplier_update(request, pk):
     }
 
     return render(request, 'inventory/supplier_form.html', context)
+
+def supplier_delete(request, pk):
+    supplier = get_object_or_404(Supplier, pk=pk)
+
+    if request.method == 'POST':
+        supplier.delete()
+        return redirect('supplier_list')
+
+    context = {
+        'supplier': supplier,
+    }
+
+    return render(request, 'inventory/supplier_confirm_delete.html', context)
