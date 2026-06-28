@@ -62,6 +62,7 @@
                 <th>Quantity</th>
                 <th>Expiry Date</th>
                 <th>Received Date</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -72,10 +73,13 @@
                     <td>{{ batch.quantity }}</td>
                     <td>{{ batch.expiry_date }}</td>
                     <td>{{ batch.received_date }}</td>
+                    <td>
+                        <a href="/batches/{{ batch.id }}/edit/">Edit</a>
+                    </td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="5">No stock batches found.</td>
+                    <td colspan="6">No stock batches found.</td>
                 </tr>
             {% endfor %}
         </tbody>

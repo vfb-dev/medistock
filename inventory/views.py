@@ -182,3 +182,22 @@ def batch_create(request):
     }
 
     return render(request, 'inventory/batch_form.html', context)
+
+def batch_update(request, pk):
+    batch = get_object_or_404(StockBatch, pk=pk)
+
+    if request.method == 'POST':
+        form = StockBatchForm(request.POST, instance=batch)
+
+        if form.is_valid():
+            form.save()
+            return redirect('batch_list')
+    else:
+        form = StockBatchForm(instance=batch)
+
+    context = {
+        'form': form,
+        'batch': batch,
+    }
+
+    return render(request, 'inventory/batch_form.html', context)

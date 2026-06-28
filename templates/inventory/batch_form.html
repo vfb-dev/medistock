@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Stock Batch - MediStock</title>
+    <title>{% if batch %}Edit{% else %}Add{% endif %} Stock Batch - MediStock</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-    <h1>Add Stock Batch</h1>
+    <h1>{% if batch %}Edit Stock Batch{% else %}Add Stock Batch{% endif %}</h1>
 
     <div class="form-box">
         <form method="post">
@@ -65,7 +65,7 @@
 
             {{ form.as_p }}
 
-            <button type="submit">Save Batch</button>
+            <button type="submit">{% if batch %}Update Batch{% else %}Save Batch{% endif %}</button>
             <a href="/batches/">Cancel</a>
         </form>
     </div>
