@@ -125,3 +125,22 @@ def supplier_create(request):
     }
 
     return render(request, 'inventory/supplier_form.html', context)
+
+def supplier_update(request, pk):
+    supplier = get_object_or_404(Supplier, pk=pk)
+
+    if request.method == 'POST':
+        form = SupplierForm(request.POST, instance=supplier)
+
+        if form.is_valid():
+            form.save()
+            return redirect('supplier_list')
+    else:
+        form = SupplierForm(instance=supplier)
+
+    context = {
+        'form': form,
+        'supplier': supplier,
+    }
+
+    return render(request, 'inventory/supplier_form.html', context)
