@@ -33,3 +33,12 @@ def dashboard(request):
     }
 
     return render(request, 'inventory/dashboard.html', context)
+
+def medicine_list(request):
+    medicines = Medicine.objects.select_related('supplier').order_by('name')
+
+    context = {
+        'medicines': medicines,
+    }
+
+    return render(request, 'inventory/medicine_list.html', context)
