@@ -157,3 +157,12 @@ def supplier_delete(request, pk):
     }
 
     return render(request, 'inventory/supplier_confirm_delete.html', context)
+
+def batch_list(request):
+    batches = StockBatch.objects.select_related('medicine').order_by('expiry_date')
+
+    context = {
+        'batches': batches,
+    }
+
+    return render(request, 'inventory/batch_list.html', context)

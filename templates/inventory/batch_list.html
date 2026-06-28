@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Batches - MediStock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            padding: 30px;
+            color: #1f2937;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        a {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #0f766e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <h1>Stock Batches</h1>
+        <a href="/">Back to Dashboard</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Medicine</th>
+                <th>Batch Number</th>
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Received Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for batch in batches %}
+                <tr>
+                    <td>{{ batch.medicine.name }}</td>
+                    <td>{{ batch.batch_number }}</td>
+                    <td>{{ batch.quantity }}</td>
+                    <td>{{ batch.expiry_date }}</td>
+                    <td>{{ batch.received_date }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No stock batches found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
