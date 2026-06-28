@@ -1,18 +1,35 @@
+from datetime import timedelta
+
 from django.shortcuts import render
+from django.utils import timezone
+from django.db.models import F
 
 from .models import Medicine, Supplier, StockBatch, StockMovement
 
+
 def dashboard(request):
+    today = timezone.now().date()
+    soon = today + timedelta(days=30)
+
     total_medicines = Medicine.objects.count()
     total_suppliers = Supplier.objects.count()
     total_batches = StockBatch.objects.count()
     recent_movements = StockMovement.objects.order_by('-created_at')[:5]
+
+    low_stock_batches = StockBatch.objects.filter(quantity__lte=F('medicine__reorder_level'))
+
+    expiring_soon_batches = StockBatch.objects.filter(
+        expiry_date__gte=today,
+        expiry_date__lte=soon
+    ).order_by('expiry_date')
 
     context = {
         'total_medicines': total_medicines,
         'total_suppliers': total_suppliers,
         'total_batches': total_batches,
         'recent_movements': recent_movements,
+        'low_stock_batches': low_stock_batches,
+        'expiring_soon_batches': expiring_soon_batches,
     }
 
     return render(request, 'inventory/dashboard.html', context)
