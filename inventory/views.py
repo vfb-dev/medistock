@@ -1,11 +1,11 @@
 from datetime import timedelta
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.db.models import F, Q
 
 from .models import Medicine, Supplier, StockBatch, StockMovement
-
+from .forms import MedicineForm
 
 def dashboard(request):
     today = timezone.now().date()
@@ -52,3 +52,19 @@ def medicine_list(request):
     }
 
     return render(request, 'inventory/medicine_list.html', context)
+
+def medicine_create(request):
+    if request.method == 'POST':
+        form = MedicineForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('medicine_list')
+    else:
+        form = MedicineForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'inventory/medicine_form.html', context)
