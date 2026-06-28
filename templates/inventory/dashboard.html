@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MediStock Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            padding: 30px;
+            color: #1f2937;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 220px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 36px;
+            color: #0f766e;
+        }
+
+        .card p {
+            margin: 8px 0 0;
+            color: #6b7280;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #0f766e;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>MediStock Dashboard</h1>
+
+    <div class="stats">
+        <div class="card">
+            <h2>{{ total_medicines }}</h2>
+            <p>Total Medicines</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ total_suppliers }}</h2>
+            <p>Total Suppliers</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ total_batches }}</h2>
+            <p>Total Stock Batches</p>
+        </div>
+    </div>
+
+    <h2>Recent Stock Movements</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Medicine</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movement in recent_movements %}
+                <tr>
+                    <td>{{ movement.medicine.name }}</td>
+                    <td>{{ movement.get_movement_type_display }}</td>
+                    <td>{{ movement.quantity }}</td>
+                    <td>{{ movement.created_at }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No stock movements yet.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
