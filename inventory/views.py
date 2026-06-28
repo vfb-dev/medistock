@@ -87,3 +87,16 @@ def medicine_update(request, pk):
     }
 
     return render(request, 'inventory/medicine_form.html', context)
+
+def medicine_delete(request, pk):
+    medicine = get_object_or_404(Medicine, pk=pk)
+
+    if request.method == 'POST':
+        medicine.delete()
+        return redirect('medicine_list')
+
+    context = {
+        'medicine': medicine,
+    }
+
+    return render(request, 'inventory/medicine_confirm_delete.html', context)

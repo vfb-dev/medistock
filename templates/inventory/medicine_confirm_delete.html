@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Medicine - MediStock</title>
+</head>
+<body>
+    <h1>Delete Medicine</h1>
+
+    <p>Are you sure you want to delete "{{ medicine.name }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+        <a href="/medicines/">Cancel</a>
+    </form>
+</body>
+</html>
