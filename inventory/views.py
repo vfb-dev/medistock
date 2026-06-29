@@ -245,3 +245,21 @@ def movement_create(request):
 
     return render(request, 'inventory/movement_form.html', context)
 
+def movement_update(request, pk):
+    movement = get_object_or_404(StockMovement, pk=pk)
+
+    if request.method == 'POST':
+        form = StockMovementForm(request.POST, instance=movement)
+
+        if form.is_valid():
+            form.save()
+            return redirect('movement_list')
+    else:
+        form = StockMovementForm(instance=movement)
+
+    context = {
+        'form': form,
+        'movement': movement,
+    }
+
+    return render(request, 'inventory/movement_form.html', context)

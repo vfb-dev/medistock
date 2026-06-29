@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Stock Movement - MediStock</title>
+    <title>{% if movement %}Edit{% else %}Add{% endif %} Stock Movement - MediStock</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-    <h1>Add Stock Movement</h1>
+    <h1>{% if movement %}Edit Stock Movement{% else %}Add Stock Movement{% endif %}</h1>
 
     <div class="form-box">
         <form method="post">
@@ -65,7 +65,7 @@
 
             {{ form.as_p }}
 
-            <button type="submit">Save Movement</button>
+            <button type="submit">{% if movement %}Update Movement{% else %}Save Movement{% endif %}</button>
             <a href="/movements/">Cancel</a>
         </form>
     </div>
