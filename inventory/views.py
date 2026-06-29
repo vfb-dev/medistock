@@ -214,3 +214,15 @@ def batch_delete(request, pk):
     }
 
     return render(request, 'inventory/batch_confirm_delete.html', context)
+
+def movement_list(request):
+    movements = StockMovement.objects.select_related(
+        'medicine',
+        'created_by',
+    ).order_by('-created_at')
+
+    context = {
+        'movements': movements,
+    }
+
+    return render(request, 'inventory/movement_list.html', context)
