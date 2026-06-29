@@ -263,3 +263,16 @@ def movement_update(request, pk):
     }
 
     return render(request, 'inventory/movement_form.html', context)
+
+def movement_delete(request, pk):
+    movement = get_object_or_404(StockMovement, pk=pk)
+
+    if request.method == 'POST':
+        movement.delete()
+        return redirect('movement_list')
+
+    context = {
+        'movement': movement,
+    }
+
+    return render(request, 'inventory/movement_confirm_delete.html', context)

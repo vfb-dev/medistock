@@ -93,6 +93,8 @@
                     <td>{{ movement.created_at }}</td>
                     <td>
                         <a href="/movements/{{ movement.id }}/edit/">Edit</a>
+                        |
+                        <a href="/movements/{{ movement.id }}/delete/">Delete</a>
                     </td>
                 </tr>
             {% empty %}

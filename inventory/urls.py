@@ -20,4 +20,5 @@ urlpatterns = [
     path('movements/', views.movement_list, name='movement_list'),
     path('movements/add/', views.movement_create, name='movement_create'),
     path('movements/<int:pk>/edit/', views.movement_update, name='movement_update'),
+    path('movements/<int:pk>/delete/', views.movement_delete, name='movement_delete'),
 ]
