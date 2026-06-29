@@ -18,4 +18,5 @@ urlpatterns = [
     path('batches/<int:pk>/edit/', views.batch_update, name='batch_update'),
     path('batches/<int:pk>/delete/', views.batch_delete, name='batch_delete'),
     path('movements/', views.movement_list, name='movement_list'),
+    path('movements/add/', views.movement_create, name='movement_create'),
 ]

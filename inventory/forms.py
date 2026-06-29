@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Medicine, Supplier, StockBatch
+from .models import Medicine, Supplier, StockBatch, StockMovement
 
 
 class MedicineForm(forms.ModelForm):
@@ -38,3 +38,13 @@ class StockBatchForm(forms.ModelForm):
         widgets = {
             'expiry_date': forms.DateInput(attrs={'type': 'date'}),
         }
+
+class StockMovementForm(forms.ModelForm):
+    class Meta:
+        model = StockMovement
+        fields = [
+            'medicine',
+            'movement_type',
+            'quantity',
+            'note',
+        ]

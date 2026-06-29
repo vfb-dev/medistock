@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.db.models import F, Q
 
 from .models import Medicine, Supplier, StockBatch, StockMovement
-from .forms import MedicineForm, SupplierForm, StockBatchForm
+from .forms import MedicineForm, SupplierForm, StockBatchForm, StockMovementForm
 
 def dashboard(request):
     today = timezone.now().date()
@@ -226,3 +226,22 @@ def movement_list(request):
     }
 
     return render(request, 'inventory/movement_list.html', context)
+
+def movement_create(request):
+    if request.method == 'POST':
+        form = StockMovementForm(request.POST)
+
+        if form.is_valid():
+            movement = form.save(commit=False)
+            movement.created_by = request.user
+            movement.save()
+            return redirect('movement_list')
+    else:
+        form = StockMovementForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'inventory/movement_form.html', context)
+
