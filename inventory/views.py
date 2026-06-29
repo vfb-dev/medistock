@@ -234,8 +234,23 @@ def movement_create(request):
         if form.is_valid():
             movement = form.save(commit=False)
             movement.created_by = request.user
-            movement.save()
-            return redirect('movement_list')
+
+            batch = movement.batch
+
+            if movement.movement_type == 'IN':
+                batch.quantity += movement.quantity
+                batch.save()
+                movement.save()
+                return redirect('movement_list')
+
+            if movement.movement_type == 'OUT':
+                if batch.quantity >= movement.quantity:
+                    batch.quantity -= movement.quantity
+                    batch.save()
+                    movement.save()
+                    return redirect('movement_list')
+
+                form.add_error('quantity', 'Not enough stock in this batch.')
     else:
         form = StockMovementForm()
 

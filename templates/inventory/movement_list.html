@@ -68,6 +68,7 @@
         <thead>
             <tr>
                 <th>Medicine</th>
+                <th>Batch</th>
                 <th>Type</th>
                 <th>Quantity</th>
                 <th>Note</th>
@@ -80,6 +81,7 @@
             {% for movement in movements %}
                 <tr>
                     <td>{{ movement.medicine.name }}</td>
+                    <td>{{ movement.batch }}</td>
 
                     {% if movement.movement_type == 'IN' %}
                         <td class="in">{{ movement.get_movement_type_display }}</td>
@@ -87,7 +89,12 @@
                         <td class="out">{{ movement.get_movement_type_display }}</td>
                     {% endif %}
 
-                    <td>{{ movement.quantity }}</td>
+                    {% if movement.movement_type == 'IN' %}
+                        <td class="in">+{{ movement.quantity }}</td>
+                    {% else %}
+                        <td class="out">-{{ movement.quantity }}</td>
+                    {% endif %}
+                    
                     <td>{{ movement.note }}</td>
                     <td>{{ movement.created_by }}</td>
                     <td>{{ movement.created_at }}</td>
@@ -99,7 +106,7 @@
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="7">No stock movements found.</td>
+                    <td colspan="8">No stock movements found.</td>
                 </tr>
             {% endfor %}
         </tbody>

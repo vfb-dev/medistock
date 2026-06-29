@@ -42,6 +42,7 @@ class StockMovement(models.Model):
     ]
 
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    batch = models.ForeignKey(StockBatch, on_delete=models.CASCADE, null=True, blank=True)
     movement_type = models.CharField(max_length=3, choices=MOVEMENT_TYPES)
     quantity = models.PositiveIntegerField()
     note = models.TextField(blank=True)

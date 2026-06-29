@@ -44,6 +44,7 @@ class StockMovementForm(forms.ModelForm):
         model = StockMovement
         fields = [
             'medicine',
+            'batch',
             'movement_type',
             'quantity',
             'note',
