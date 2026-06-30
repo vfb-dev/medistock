@@ -1,42 +1,55 @@
 {% extends "base.html" %}
 
 {% block title %}Stock Batches - MediStock{% endblock %}
+{% block page_kicker %}Lot tracking{% endblock %}
+{% block page_title %}Stock Batches{% endblock %}
+{% block header_actions %}
+    <a class="button" href="{% url 'batch_create' %}">Add Batch</a>
+{% endblock %}
 
 {% block content %}
-    <div class="topbar">
-        <h1>Stock Batches</h1>
-        <a href="/batches/add/">Add Batch</a>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Medicine</th>
-                <th>Batch Number</th>
-                <th>Quantity</th>
-                <th>Expiry Date</th>
-                <th>Received Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for batch in batches %}
-                <tr>
-                    <td>{{ batch.medicine.name }}</td>
-                    <td>{{ batch.batch_number }}</td>
-                    <td>{{ batch.quantity }}</td>
-                    <td>{{ batch.expiry_date }}</td>
-                    <td>{{ batch.received_date }}</td>
-                    <td>
-                        <a href="/batches/{{ batch.id }}/edit/">Edit</a> |
-                        <a href="/batches/{{ batch.id }}/delete/">Delete</a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="6">No stock batches found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <section class="data-section">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Batch inventory</p>
+                <h2>All Stock Batches</h2>
+            </div>
+            <span class="count-badge">{{ batches|length }} listed</span>
+        </div>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Batch Number</th>
+                        <th>Quantity</th>
+                        <th>Expiry Date</th>
+                        <th>Received Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for batch in batches %}
+                        <tr>
+                            <td><strong>{{ batch.medicine.name }}</strong></td>
+                            <td>{{ batch.batch_number }}</td>
+                            <td><span class="stock-count">{{ batch.quantity }}</span></td>
+                            <td>{{ batch.expiry_date|date:"M d, Y" }}</td>
+                            <td>{{ batch.received_date|date:"M d, Y" }}</td>
+                            <td>
+                                <div class="action-group">
+                                    <a class="action-link" href="{% url 'batch_update' batch.id %}">Edit</a>
+                                    <a class="action-link danger" href="{% url 'batch_delete' batch.id %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td class="empty-state" colspan="6">No stock batches found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 {% endblock %}

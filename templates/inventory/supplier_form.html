@@ -1,16 +1,26 @@
 {% extends "base.html" %}
 
 {% block title %}{% if supplier %}Edit{% else %}Add{% endif %} Supplier - MediStock{% endblock %}
+{% block page_kicker %}Vendor network{% endblock %}
+{% block page_title %}{% if supplier %}Edit Supplier{% else %}Add Supplier{% endif %}{% endblock %}
 
 {% block content %}
-    <h1>{% if supplier %}Edit Supplier{% else %}Add Supplier{% endif %}</h1>
+    <section class="form-layout">
+        <div class="form-intro">
+            <p class="eyebrow">Supplier profile</p>
+            <h2>{% if supplier %}Update supplier{% else %}Create supplier{% endif %}</h2>
+            <p>Vendor contact details and fulfillment address.</p>
+        </div>
 
-    <div class="form-box">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">{% if supplier %}Update Supplier{% else %}Save Supplier{% endif %}</button>
-            <a href="/suppliers/" style="margin-left: 12px;">Cancel</a>
-        </form>
-    </div>
+        <div class="form-card">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-actions">
+                    <button class="button" type="submit">{% if supplier %}Update Supplier{% else %}Save Supplier{% endif %}</button>
+                    <a class="button button-secondary" href="{% url 'supplier_list' %}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
 {% endblock %}

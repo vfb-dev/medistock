@@ -3,9 +3,18 @@
 {% block title %}Login - MediStock{% endblock %}
 
 {% block content %}
-    <h1>MediStock Login</h1>
+    <section class="login-card">
+        <div class="auth-brand">
+            <span class="brand-mark" aria-hidden="true">MS</span>
+            <span class="brand-copy">
+                <strong>MediStock</strong>
+                <small>Clinical inventory</small>
+            </span>
+        </div>
 
-    <div class="form-box">
+        <h1>Welcome back</h1>
+        <p class="auth-subtitle">Sign in to continue managing inventory, batches, suppliers, and stock movement records.</p>
+
         {% if form.errors %}
             <p class="error">Your username and password did not match. Please try again.</p>
         {% endif %}
@@ -13,7 +22,7 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Login</button>
+            <button class="button" type="submit">Login</button>
         </form>
-    </div>
+    </section>
 {% endblock %}

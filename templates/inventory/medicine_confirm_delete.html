@@ -1,18 +1,19 @@
 {% extends "base.html" %}
 
 {% block title %}Delete Medicine - MediStock{% endblock %}
+{% block page_kicker %}Catalog{% endblock %}
+{% block page_title %}Delete Medicine{% endblock %}
 
 {% block content %}
-    <h1>Delete Medicine</h1>
-
-    <div class="box">
-        <p class="warning">This action cannot be undone.</p>
-        <p>Are you sure you want to delete:</p>
-        <h2>{{ medicine.name }}</h2>
-        <form method="post">
+    <section class="confirm-panel danger-zone">
+        <p class="eyebrow">Permanent action</p>
+        <h2>Delete this medicine?</h2>
+        <p>This action cannot be undone.</p>
+        <div class="object-summary">{{ medicine.name }}</div>
+        <form class="form-actions" method="post">
             {% csrf_token %}
-            <button class="danger-button" type="submit">Yes, Delete</button>
-            <a href="/medicines/" style="margin-left: 12px;">Cancel</a>
+            <button class="button button-danger" type="submit">Yes, Delete</button>
+            <a class="button button-secondary" href="{% url 'medicine_list' %}">Cancel</a>
         </form>
-    </div>
+    </section>
 {% endblock %}

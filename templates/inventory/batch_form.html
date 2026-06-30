@@ -1,16 +1,26 @@
 {% extends "base.html" %}
 
 {% block title %}{% if batch %}Edit{% else %}Add{% endif %} Stock Batch - MediStock{% endblock %}
+{% block page_kicker %}Lot tracking{% endblock %}
+{% block page_title %}{% if batch %}Edit Stock Batch{% else %}Add Stock Batch{% endif %}{% endblock %}
 
 {% block content %}
-    <h1>{% if batch %}Edit Stock Batch{% else %}Add Stock Batch{% endif %}</h1>
+    <section class="form-layout">
+        <div class="form-intro">
+            <p class="eyebrow">Batch details</p>
+            <h2>{% if batch %}Update stock lot{% else %}Create stock lot{% endif %}</h2>
+            <p>Batch quantity, medicine assignment, and expiry date.</p>
+        </div>
 
-    <div class="form-box">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">{% if batch %}Update Batch{% else %}Save Batch{% endif %}</button>
-            <a href="/batches/" style="margin-left: 12px;">Cancel</a>
-        </form>
-    </div>
+        <div class="form-card">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-actions">
+                    <button class="button" type="submit">{% if batch %}Update Batch{% else %}Save Batch{% endif %}</button>
+                    <a class="button button-secondary" href="{% url 'batch_list' %}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
 {% endblock %}

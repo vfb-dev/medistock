@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
 {% block title %}Delete Stock Movement - MediStock{% endblock %}
+{% block page_kicker %}Audit trail{% endblock %}
+{% block page_title %}Delete Stock Movement{% endblock %}
 
 {% block content %}
-    <h1>Delete Stock Movement</h1>
-
-    <div class="box">
-        <p class="warning">This action cannot be undone.</p>
+    <section class="confirm-panel danger-zone">
+        <p class="eyebrow">Permanent action</p>
+        <h2>Delete this stock movement?</h2>
         {% if error %}<p class="error">{{ error }}</p>{% endif %}
-        <p>Are you sure you want to delete this movement?</p>
-        <h2>{{ movement.get_movement_type_display }} - {{ movement.medicine.name }} - {{ movement.quantity }}</h2>
-        <form method="post">
+        <p>This action cannot be undone.</p>
+        <div class="object-summary">{{ movement.get_movement_type_display }} - {{ movement.medicine.name }} - {{ movement.quantity }}</div>
+        <form class="form-actions" method="post">
             {% csrf_token %}
-            <button class="danger-button" type="submit">Yes, Delete</button>
-            <a href="/movements/" style="margin-left: 12px;">Cancel</a>
+            <button class="button button-danger" type="submit">Yes, Delete</button>
+            <a class="button button-secondary" href="{% url 'movement_list' %}">Cancel</a>
         </form>
-    </div>
+    </section>
 {% endblock %}

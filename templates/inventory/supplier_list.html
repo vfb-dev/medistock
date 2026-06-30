@@ -1,40 +1,53 @@
 {% extends "base.html" %}
 
 {% block title %}Suppliers - MediStock{% endblock %}
+{% block page_kicker %}Vendor network{% endblock %}
+{% block page_title %}Suppliers{% endblock %}
+{% block header_actions %}
+    <a class="button" href="{% url 'supplier_create' %}">Add Supplier</a>
+{% endblock %}
 
 {% block content %}
-    <div class="topbar">
-        <h1>Suppliers</h1>
-        <a href="/suppliers/add/">Add Supplier</a>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for supplier in suppliers %}
-                <tr>
-                    <td>{{ supplier.name }}</td>
-                    <td>{{ supplier.phone }}</td>
-                    <td>{{ supplier.email }}</td>
-                    <td>{{ supplier.address }}</td>
-                    <td>
-                        <a href="/suppliers/{{ supplier.id }}/edit/">Edit</a> |
-                        <a href="/suppliers/{{ supplier.id }}/delete/">Delete</a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="5">No suppliers found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <section class="data-section">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Supplier directory</p>
+                <h2>All Suppliers</h2>
+            </div>
+            <span class="count-badge">{{ suppliers|length }} listed</span>
+        </div>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for supplier in suppliers %}
+                        <tr>
+                            <td><strong>{{ supplier.name }}</strong></td>
+                            <td>{{ supplier.phone|default:"-" }}</td>
+                            <td>{{ supplier.email|default:"-" }}</td>
+                            <td>{{ supplier.address|default:"-"|linebreaksbr }}</td>
+                            <td>
+                                <div class="action-group">
+                                    <a class="action-link" href="{% url 'supplier_update' supplier.id %}">Edit</a>
+                                    <a class="action-link danger" href="{% url 'supplier_delete' supplier.id %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td class="empty-state" colspan="5">No suppliers found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 {% endblock %}

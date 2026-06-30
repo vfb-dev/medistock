@@ -1,16 +1,26 @@
 {% extends "base.html" %}
 
 {% block title %}{% if medicine %}Edit{% else %}Add{% endif %} Medicine - MediStock{% endblock %}
+{% block page_kicker %}Catalog{% endblock %}
+{% block page_title %}{% if medicine %}Edit Medicine{% else %}Add Medicine{% endif %}{% endblock %}
 
 {% block content %}
-    <h1>{% if medicine %}Edit Medicine{% else %}Add Medicine{% endif %}</h1>
+    <section class="form-layout">
+        <div class="form-intro">
+            <p class="eyebrow">Medicine profile</p>
+            <h2>{% if medicine %}Update catalog item{% else %}Create catalog item{% endif %}</h2>
+            <p>Catalog information, pricing, supplier ownership, and reorder threshold.</p>
+        </div>
 
-    <div class="form-box">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">{% if medicine %}Update Medicine{% else %}Save Medicine{% endif %}</button>
-            <a href="/medicines/" style="margin-left: 12px;">Cancel</a>
-        </form>
-    </div>
+        <div class="form-card">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-actions">
+                    <button class="button" type="submit">{% if medicine %}Update Medicine{% else %}Save Medicine{% endif %}</button>
+                    <a class="button button-secondary" href="{% url 'medicine_list' %}">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
 {% endblock %}

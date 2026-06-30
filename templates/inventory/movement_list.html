@@ -1,51 +1,64 @@
 {% extends "base.html" %}
 
 {% block title %}Stock Movements - MediStock{% endblock %}
+{% block page_kicker %}Audit trail{% endblock %}
+{% block page_title %}Stock Movements{% endblock %}
+{% block header_actions %}
+    <a class="button" href="{% url 'movement_create' %}">Add Movement</a>
+{% endblock %}
 
 {% block content %}
-    <div class="topbar">
-        <h1>Stock Movements</h1>
-        <a href="/movements/add/">Add Movement</a>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Medicine</th>
-                <th>Batch</th>
-                <th>Type</th>
-                <th>Quantity</th>
-                <th>Note</th>
-                <th>Created By</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for movement in movements %}
-                <tr>
-                    <td>{{ movement.medicine.name }}</td>
-                    <td>{{ movement.batch }}</td>
-                    {% if movement.movement_type == 'IN' %}
-                        <td class="in">{{ movement.get_movement_type_display }}</td>
-                        <td class="in">+{{ movement.quantity }}</td>
-                    {% else %}
-                        <td class="out">{{ movement.get_movement_type_display }}</td>
-                        <td class="out">-{{ movement.quantity }}</td>
-                    {% endif %}
-                    <td>{{ movement.note }}</td>
-                    <td>{{ movement.created_by }}</td>
-                    <td>{{ movement.created_at }}</td>
-                    <td>
-                        <a href="/movements/{{ movement.id }}/edit/">Edit</a> |
-                        <a href="/movements/{{ movement.id }}/delete/">Delete</a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="8">No stock movements found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <section class="data-section">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Movement history</p>
+                <h2>All Stock Movements</h2>
+            </div>
+            <span class="count-badge">{{ movements|length }} listed</span>
+        </div>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Batch</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Note</th>
+                        <th>Created By</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movement in movements %}
+                        <tr>
+                            <td><strong>{{ movement.medicine.name }}</strong></td>
+                            <td>{{ movement.batch }}</td>
+                            {% if movement.movement_type == 'IN' %}
+                                <td><span class="status-pill status-in">{{ movement.get_movement_type_display }}</span></td>
+                                <td class="in numeric">+{{ movement.quantity }}</td>
+                            {% else %}
+                                <td><span class="status-pill status-out">{{ movement.get_movement_type_display }}</span></td>
+                                <td class="out numeric">-{{ movement.quantity }}</td>
+                            {% endif %}
+                            <td>{{ movement.note|default:"-" }}</td>
+                            <td>{{ movement.created_by|default:"System" }}</td>
+                            <td>{{ movement.created_at|date:"M d, Y H:i" }}</td>
+                            <td>
+                                <div class="action-group">
+                                    <a class="action-link" href="{% url 'movement_update' movement.id %}">Edit</a>
+                                    <a class="action-link danger" href="{% url 'movement_delete' movement.id %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td class="empty-state" colspan="8">No stock movements found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 {% endblock %}

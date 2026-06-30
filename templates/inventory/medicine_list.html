@@ -1,50 +1,71 @@
 {% extends "base.html" %}
 
 {% block title %}Medicines - MediStock{% endblock %}
+{% block page_kicker %}Catalog{% endblock %}
+{% block page_title %}Medicines{% endblock %}
+{% block header_actions %}
+    <a class="button" href="{% url 'medicine_create' %}">Add Medicine</a>
+{% endblock %}
 
 {% block content %}
-    <div class="topbar">
-        <h1>Medicines</h1>
-        <a href="/medicines/add/">Add Medicine</a>
-    </div>
-
-    <form method="get" style="margin-bottom: 20px; max-width: 420px;">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search medicines...">
-        <button type="submit">Search</button>
-        {% if query %}<a href="/medicines/" style="margin-left: 10px;">Clear</a>{% endif %}
+    <form class="search-toolbar" method="get">
+        <div class="search-field">
+            <input type="text" name="q" value="{{ query }}" placeholder="Search medicines..." aria-label="Search medicines">
+        </div>
+        <button class="button button-secondary" type="submit">Search</button>
+        {% if query %}<a class="button button-ghost" href="{% url 'medicine_list' %}">Clear</a>{% endif %}
     </form>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Generic Name</th>
-                <th>Category</th>
-                <th>Unit Price</th>
-                <th>Reorder Level</th>
-                <th>Supplier</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for medicine in medicines %}
-                <tr>
-                    <td>{{ medicine.name }}</td>
-                    <td>{{ medicine.generic_name }}</td>
-                    <td>{{ medicine.category }}</td>
-                    <td>{{ medicine.unit_price }}</td>
-                    <td>{{ medicine.reorder_level }}</td>
-                    <td>{{ medicine.supplier }}</td>
-                    <td>
-                        <a href="/medicines/{{ medicine.id }}/edit/">Edit</a> |
-                        <a href="/medicines/{{ medicine.id }}/delete/">Delete</a>
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="7">No medicines found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <section class="data-section">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">Medicine catalog</p>
+                <h2>All Medicines</h2>
+            </div>
+            <span class="count-badge">{{ medicines|length }} listed</span>
+        </div>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Generic Name</th>
+                        <th>Category</th>
+                        <th>Unit Price</th>
+                        <th>Reorder Level</th>
+                        <th>Supplier</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medicine in medicines %}
+                        <tr>
+                            <td><strong>{{ medicine.name }}</strong></td>
+                            <td>{{ medicine.generic_name|default:"-" }}</td>
+                            <td>
+                                {% if medicine.category %}
+                                    <span class="tag">{{ medicine.category }}</span>
+                                {% else %}
+                                    <span class="muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="numeric">{{ medicine.unit_price }}</td>
+                            <td class="numeric">{{ medicine.reorder_level }}</td>
+                            <td>{{ medicine.supplier|default:"-" }}</td>
+                            <td>
+                                <div class="action-group">
+                                    <a class="action-link" href="{% url 'medicine_update' medicine.id %}">Edit</a>
+                                    <a class="action-link danger" href="{% url 'medicine_delete' medicine.id %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td class="empty-state" colspan="7">No medicines found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 {% endblock %}

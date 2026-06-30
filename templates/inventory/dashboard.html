@@ -1,118 +1,158 @@
 {% extends "base.html" %}
 
-{% block title %}MediStock Dashboard{% endblock %}
+{% block title %}Dashboard - MediStock{% endblock %}
+{% block page_kicker %}Operations overview{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block header_actions %}
+    <a class="button button-secondary" href="{% url 'movement_create' %}">Record Movement</a>
+    <a class="button" href="{% url 'medicine_create' %}">Add Medicine</a>
+{% endblock %}
 
 {% block content %}
-    <h1>MediStock Dashboard</h1>
 
-    <div class="stats">
-        <div class="card">
-            <h2>{{ total_medicines }}</h2>
-            <p>Total Medicines</p>
-        </div>
-        <div class="card">
-            <h2>{{ total_suppliers }}</h2>
-            <p>Total Suppliers</p>
-        </div>
-        <div class="card">
-            <h2>{{ total_batches }}</h2>
-            <p>Total Stock Batches</p>
-        </div>
+
+    <section class="metric-grid" aria-label="Inventory metrics">
+        <article class="metric-card">
+            <p class="metric-label">Medicines</p>
+            <p class="metric-value">{{ total_medicines }}</p>
+            <p class="metric-note">Catalog items</p>
+        </article>
+        <article class="metric-card">
+            <p class="metric-label">Suppliers</p>
+            <p class="metric-value">{{ total_suppliers }}</p>
+            <p class="metric-note">Vendor records</p>
+        </article>
+        <article class="metric-card">
+            <p class="metric-label">Stock Batches</p>
+            <p class="metric-value">{{ total_batches }}</p>
+            <p class="metric-note">Tracked lots</p>
+        </article>
+        <article class="metric-card critical">
+            <p class="metric-label">Low Stock</p>
+            <p class="metric-value">{{ low_stock_batches|length }}</p>
+            <p class="metric-note">Needs attention</p>
+        </article>
+        <article class="metric-card alert">
+            <p class="metric-label">Expiring Soon</p>
+            <p class="metric-value">{{ expiring_soon_batches|length }}</p>
+            <p class="metric-note">Next 30 days</p>
+        </article>
+    </section>
+
+    <div class="dashboard-grid">
+        <section class="data-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Inventory risk</p>
+                    <h2>Low Stock Batches</h2>
+                </div>
+                <span class="count-badge">{{ low_stock_batches|length }} listed</span>
+            </div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Batch</th>
+                            <th>Quantity</th>
+                            <th>Reorder Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for batch in low_stock_batches %}
+                            <tr>
+                                <td>{{ batch.medicine.name }}</td>
+                                <td>{{ batch.batch_number }}</td>
+                                <td><span class="stock-count">{{ batch.quantity }}</span></td>
+                                <td class="numeric">{{ batch.medicine.reorder_level }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td class="empty-state" colspan="4">No low-stock batches.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="data-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Expiry watch</p>
+                    <h2>Expiring Soon</h2>
+                </div>
+                <span class="count-badge">{{ expiring_soon_batches|length }} listed</span>
+            </div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Batch</th>
+                            <th>Quantity</th>
+                            <th>Expiry Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for batch in expiring_soon_batches %}
+                            <tr>
+                                <td>{{ batch.medicine.name }}</td>
+                                <td>{{ batch.batch_number }}</td>
+                                <td><span class="stock-count">{{ batch.quantity }}</span></td>
+                                <td>{{ batch.expiry_date|date:"M d, Y" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td class="empty-state" colspan="4">No batches expiring soon.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="data-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Latest activity</p>
+                    <h2>Recent Stock Movements</h2>
+                </div>
+                <a class="action-link" href="{% url 'movement_list' %}">View all</a>
+            </div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Batch</th>
+                            <th>Type</th>
+                            <th>Quantity</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for movement in recent_movements %}
+                            <tr>
+                                <td>{{ movement.medicine.name }}</td>
+                                <td>{{ movement.batch }}</td>
+                                {% if movement.movement_type == 'IN' %}
+                                    <td><span class="status-pill status-in">{{ movement.get_movement_type_display }}</span></td>
+                                    <td class="in numeric">+{{ movement.quantity }}</td>
+                                {% else %}
+                                    <td><span class="status-pill status-out">{{ movement.get_movement_type_display }}</span></td>
+                                    <td class="out numeric">-{{ movement.quantity }}</td>
+                                {% endif %}
+                                <td>{{ movement.created_at|date:"M d, Y H:i" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td class="empty-state" colspan="5">No stock movements yet.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
-
-    <h2>Alerts</h2>
-    <div class="stats">
-        <div class="card">
-            <h2>{{ low_stock_batches|length }}</h2>
-            <p>Low Stock Batches</p>
-        </div>
-        <div class="card">
-            <h2>{{ expiring_soon_batches|length }}</h2>
-            <p>Expiring Soon</p>
-        </div>
-    </div>
-
-    <h2>Low Stock</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Medicine</th>
-                <th>Batch</th>
-                <th>Quantity</th>
-                <th>Reorder Level</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for batch in low_stock_batches %}
-                <tr>
-                    <td>{{ batch.medicine.name }}</td>
-                    <td>{{ batch.batch_number }}</td>
-                    <td>{{ batch.quantity }}</td>
-                    <td>{{ batch.medicine.reorder_level }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">No low-stock batches.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h2>Expiring Soon</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Medicine</th>
-                <th>Batch</th>
-                <th>Quantity</th>
-                <th>Expiry Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for batch in expiring_soon_batches %}
-                <tr>
-                    <td>{{ batch.medicine.name }}</td>
-                    <td>{{ batch.batch_number }}</td>
-                    <td>{{ batch.quantity }}</td>
-                    <td>{{ batch.expiry_date }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">No batches expiring soon.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h2>Recent Stock Movements</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Medicine</th>
-                <th>Batch</th>
-                <th>Type</th>
-                <th>Quantity</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for movement in recent_movements %}
-                <tr>
-                    <td>{{ movement.medicine.name }}</td>
-                    <td>{{ movement.batch }}</td>
-                    <td>{{ movement.get_movement_type_display }}</td>
-                    {% if movement.movement_type == 'IN' %}
-                        <td class="in">+{{ movement.quantity }}</td>
-                    {% else %}
-                        <td class="out">-{{ movement.quantity }}</td>
-                    {% endif %}
-                    <td>{{ movement.created_at }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="5">No stock movements yet.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 {% endblock %}
