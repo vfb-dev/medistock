@@ -267,7 +267,12 @@ def movement_update(request, pk):
         form = StockMovementForm(request.POST, instance=movement)
 
         if form.is_valid():
-            form.save()
+            movement = form.save(commit=False)
+
+            if movement.batch:
+                movement.medicine = movement.batch.medicine
+
+            movement.save()
             return redirect('movement_list')
     else:
         form = StockMovementForm(instance=movement)
