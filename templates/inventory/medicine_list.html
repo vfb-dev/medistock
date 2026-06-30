@@ -1,77 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Medicines - MediStock</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f8fb;
-            margin: 0;
-            padding: 30px;
-            color: #1f2937;
-        }
+{% extends "base.html" %}
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
+{% block title %}Medicines - MediStock{% endblock %}
 
-        a {
-            color: #0f766e;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        table {
-            width: 100%;
-            background: white;
-            border-collapse: collapse;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 14px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-        }
-
-        th {
-            background: #0f766e;
-            color: white;
-        }
-    </style>
-</head>
-<body>
+{% block content %}
     <div class="topbar">
         <h1>Medicines</h1>
-
-        <div>
-            <a href="/medicines/add/">Add Medicine</a>
-            <a href="/" style="margin-left: 16px;">Back to Dashboard</a>
-        </div>
+        <a href="/medicines/add/">Add Medicine</a>
     </div>
 
-    <form method="get" style="margin-bottom: 20px;">
-        <input
-            type="text"
-            name="q"
-            value="{{ query }}"
-            placeholder="Search medicines..."
-            style="padding: 10px; width: 280px; border: 1px solid #d1d5db; border-radius: 6px;"
-        >
-        <button
-            type="submit"
-            style="padding: 10px 16px; background: #0f766e; color: white; border: none; border-radius: 6px; cursor: pointer;"
-        >
-            Search
-        </button>
-
-        {% if query %}
-            <a href="/medicines/" style="margin-left: 10px;">Clear</a>
-        {% endif %}
+    <form method="get" style="margin-bottom: 20px; max-width: 420px;">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search medicines...">
+        <button type="submit">Search</button>
+        {% if query %}<a href="/medicines/" style="margin-left: 10px;">Clear</a>{% endif %}
     </form>
 
     <table>
@@ -96,8 +36,7 @@
                     <td>{{ medicine.reorder_level }}</td>
                     <td>{{ medicine.supplier }}</td>
                     <td>
-                        <a href="/medicines/{{ medicine.id }}/edit/">Edit</a>
-                        |
+                        <a href="/medicines/{{ medicine.id }}/edit/">Edit</a> |
                         <a href="/medicines/{{ medicine.id }}/delete/">Delete</a>
                     </td>
                 </tr>
@@ -108,5 +47,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

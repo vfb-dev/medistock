@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}MediStock{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            padding: 30px;
+            color: #1f2937;
+        }
+
+        a {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .logout-form {
+            display: inline;
+            margin: 0;
+        }
+
+        .link-button {
+            background: none;
+            border: 0;
+            color: #0f766e;
+            cursor: pointer;
+            font: inherit;
+            font-weight: bold;
+            padding: 0;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .card, .box, .form-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card {
+            width: 220px;
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 36px;
+            color: #0f766e;
+        }
+
+        .card p {
+            margin: 8px 0 0;
+            color: #6b7280;
+        }
+
+        .box, .form-box {
+            max-width: 560px;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #0f766e;
+            color: white;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 14px;
+            margin-bottom: 6px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button, .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 16px;
+            background: #0f766e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .danger-button {
+            background: #dc2626;
+        }
+
+        .warning, .errorlist, .error {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+        .in {
+            color: #047857;
+            font-weight: bold;
+        }
+
+        .out {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+        @media (max-width: 720px) {
+            body {
+                padding: 18px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <div class="nav">
+            <a href="/">Dashboard</a>
+            <a href="/medicines/">Medicines</a>
+            <a href="/suppliers/">Suppliers</a>
+            <a href="/batches/">Stock Batches</a>
+            <a href="/movements/">Stock Movements</a>
+            <form class="logout-form" method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="link-button" type="submit">Logout</button>
+            </form>
+        </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,57 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Suppliers - MediStock</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f8fb;
-            margin: 0;
-            padding: 30px;
-            color: #1f2937;
-        }
+{% extends "base.html" %}
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
+{% block title %}Suppliers - MediStock{% endblock %}
 
-        a {
-            color: #0f766e;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        table {
-            width: 100%;
-            background: white;
-            border-collapse: collapse;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 14px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-        }
-
-        th {
-            background: #0f766e;
-            color: white;
-        }
-    </style>
-</head>
-<body>
+{% block content %}
     <div class="topbar">
         <h1>Suppliers</h1>
-
-        <div>
-            <a href="/suppliers/add/">Add Supplier</a>
-            <a href="/" style="margin-left: 16px;">Back to Dashboard</a>
-        </div>
+        <a href="/suppliers/add/">Add Supplier</a>
     </div>
 
     <table>
@@ -72,8 +26,7 @@
                     <td>{{ supplier.email }}</td>
                     <td>{{ supplier.address }}</td>
                     <td>
-                        <a href="/suppliers/{{ supplier.id }}/edit/">Edit</a>
-                        |
+                        <a href="/suppliers/{{ supplier.id }}/edit/">Edit</a> |
                         <a href="/suppliers/{{ supplier.id }}/delete/">Delete</a>
                     </td>
                 </tr>
@@ -84,5 +37,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

@@ -1,95 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MediStock Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f8fb;
-            margin: 0;
-            padding: 30px;
-            color: #1f2937;
-        }
+{% extends "base.html" %}
 
-        h1 {
-            margin-bottom: 20px;
-        }
+{% block title %}MediStock Dashboard{% endblock %}
 
-        h2 {
-            margin-top: 30px;
-        }
-
-        .stats {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 220px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .card h2 {
-            margin: 0;
-            font-size: 36px;
-            color: #0f766e;
-        }
-
-        .card p {
-            margin: 8px 0 0;
-            color: #6b7280;
-        }
-
-        table {
-            width: 100%;
-            background: white;
-            border-collapse: collapse;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 25px;
-        }
-
-        th, td {
-            padding: 14px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-        }
-
-        th {
-            background: #0f766e;
-            color: white;
-        }
-    </style>
-</head>
-<body>
+{% block content %}
     <h1>MediStock Dashboard</h1>
-
-    <p>
-        <a href="/medicines/">View Medicines</a>
-        |
-        <a href="/suppliers/">View Suppliers</a>
-        |
-        <a href="/batches/">View Stock Batches</a>
-        |
-        <a href="/movements/">View Stock Movements</a>
-    </p>
 
     <div class="stats">
         <div class="card">
             <h2>{{ total_medicines }}</h2>
             <p>Total Medicines</p>
         </div>
-
         <div class="card">
             <h2>{{ total_suppliers }}</h2>
             <p>Total Suppliers</p>
         </div>
-
         <div class="card">
             <h2>{{ total_batches }}</h2>
             <p>Total Stock Batches</p>
@@ -97,13 +21,11 @@
     </div>
 
     <h2>Alerts</h2>
-
     <div class="stats">
         <div class="card">
             <h2>{{ low_stock_batches|length }}</h2>
             <p>Low Stock Batches</p>
         </div>
-
         <div class="card">
             <h2>{{ expiring_soon_batches|length }}</h2>
             <p>Expiring Soon</p>
@@ -111,7 +33,6 @@
     </div>
 
     <h2>Low Stock</h2>
-
     <table>
         <thead>
             <tr>
@@ -138,7 +59,6 @@
     </table>
 
     <h2>Expiring Soon</h2>
-
     <table>
         <thead>
             <tr>
@@ -165,7 +85,6 @@
     </table>
 
     <h2>Recent Stock Movements</h2>
-
     <table>
         <thead>
             <tr>
@@ -182,7 +101,11 @@
                     <td>{{ movement.medicine.name }}</td>
                     <td>{{ movement.batch }}</td>
                     <td>{{ movement.get_movement_type_display }}</td>
-                    <td>{{ movement.quantity }}</td>
+                    {% if movement.movement_type == 'IN' %}
+                        <td class="in">+{{ movement.quantity }}</td>
+                    {% else %}
+                        <td class="out">-{{ movement.quantity }}</td>
+                    {% endif %}
                     <td>{{ movement.created_at }}</td>
                 </tr>
             {% empty %}
@@ -192,5 +115,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

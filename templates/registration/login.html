@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Login - MediStock{% endblock %}
+
+{% block content %}
+    <h1>MediStock Login</h1>
+
+    <div class="form-box">
+        {% if form.errors %}
+            <p class="error">Your username and password did not match. Please try again.</p>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+    </div>
+{% endblock %}

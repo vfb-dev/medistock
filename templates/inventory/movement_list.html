@@ -1,67 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Stock Movements - MediStock</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f8fb;
-            margin: 0;
-            padding: 30px;
-            color: #1f2937;
-        }
+{% extends "base.html" %}
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
+{% block title %}Stock Movements - MediStock{% endblock %}
 
-        a {
-            color: #0f766e;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        table {
-            width: 100%;
-            background: white;
-            border-collapse: collapse;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 14px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-        }
-
-        th {
-            background: #0f766e;
-            color: white;
-        }
-
-        .in {
-            color: #047857;
-            font-weight: bold;
-        }
-
-        .out {
-            color: #b91c1c;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
+{% block content %}
     <div class="topbar">
         <h1>Stock Movements</h1>
-
-        <div>
-            <a href="/movements/add/">Add Movement</a>
-            <a href="/" style="margin-left: 16px;">Back to Dashboard</a>
-        </div>
+        <a href="/movements/add/">Add Movement</a>
     </div>
 
     <table>
@@ -82,25 +26,18 @@
                 <tr>
                     <td>{{ movement.medicine.name }}</td>
                     <td>{{ movement.batch }}</td>
-
                     {% if movement.movement_type == 'IN' %}
                         <td class="in">{{ movement.get_movement_type_display }}</td>
-                    {% else %}
-                        <td class="out">{{ movement.get_movement_type_display }}</td>
-                    {% endif %}
-
-                    {% if movement.movement_type == 'IN' %}
                         <td class="in">+{{ movement.quantity }}</td>
                     {% else %}
+                        <td class="out">{{ movement.get_movement_type_display }}</td>
                         <td class="out">-{{ movement.quantity }}</td>
                     {% endif %}
-                    
                     <td>{{ movement.note }}</td>
                     <td>{{ movement.created_by }}</td>
                     <td>{{ movement.created_at }}</td>
                     <td>
-                        <a href="/movements/{{ movement.id }}/edit/">Edit</a>
-                        |
+                        <a href="/movements/{{ movement.id }}/edit/">Edit</a> |
                         <a href="/movements/{{ movement.id }}/delete/">Delete</a>
                     </td>
                 </tr>
@@ -111,5 +48,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}
