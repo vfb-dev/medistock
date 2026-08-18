@@ -11,45 +11,6 @@ A Django inventory management system for clinical and pharmacy stock control. St
   </p>
 </div>
 
-## Features
-
-- Login-protected inventory workspace
-- Dashboard with inventory metrics
-- Low stock batch alerts
-- Expiring batch alerts for the next 30 days
-- Recent stock movement overview
-- Medicine catalog management
-- Medicine search by name, generic name, and category
-- Supplier management
-- Stock batch management with expiry dates
-- Stock in and stock out movement tracking
-- Automatic batch quantity updates when movements are created, edited, or deleted
-- Insufficient stock validation for stock out movements
-- Atomic stock movement workflow to keep quantities consistent
-- Django admin management for suppliers, medicines, batches, and movements
-- Demo data seeding command with optional demo user
-- Responsive custom dashboard UI
-
-## Tech Stack
-
-- Python
-- Django
-- PostgreSQL
-- python-decouple
-- HTML/CSS
-
-## Main Pages
-
-- `/accounts/login/` - Staff login
-- `/` - Inventory dashboard
-- `/medicines/` - Medicine catalog and search
-- `/medicines/add/` - Add medicine
-- `/suppliers/` - Supplier management
-- `/batches/` - Stock batch management
-- `/movements/` - Stock movement history
-- `/movements/add/` - Record stock in or stock out
-- `/admin/` - Django admin
-
 ## Setup Instructions
 
 ```bash
